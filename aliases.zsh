@@ -29,3 +29,31 @@ function fs() {
     ~/figma/figma/fullscreen/fs "$@"; 
 }
 alias cddev="cd ~/dev"
+
+function run_pipeline() {
+    if [ $# -lt 3 ]; then
+        echo "Usage: run_pipeline <pipeline_name> <params> <execution_name>"
+        return 1
+    fi
+
+    local pipeline_name=$1
+    local params=$2
+    local execution_name=$3
+
+    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/make_edits/${pipeline_name}:pipeline -- dev create-pipeline --start-execution --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/make_edits/${pipeline_name}/params/${params}.yaml --execution-name ${execution_name}
+}
+
+function run_pipeline_local() {
+    if [ $# -lt 2 ]; then
+        echo "Usage: run_pipeline_local <pipeline_name> <params>"
+        return 1
+    fi
+
+    local pipeline_name=$1
+    local params=$2
+
+    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/make_edits/${pipeline_name}:pipeline.local -- --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/make_edits/${pipeline_name}/params/${params}.yaml
+}
+
+alias run_sm='run_pipeline'
+alias run_local='run_pipeline_local'
