@@ -14,6 +14,10 @@ function gac() {
 function gdel() { 
     git num convert "$@" | xargs rm 
 }
+function gstash() { 
+    git num stash push "$@" 
+}
+
 function pr() {
     BRANCH="$(git rev-parse --abbrev-ref HEAD)"
     git push -u origin "$BRANCH"
