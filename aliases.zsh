@@ -5,17 +5,17 @@ alias gco="git num checkout"
 alias gd="git num diff"
 alias gds="git num diff --staged"
 
-function gnc() { 
-    git num convert "$@" 
+function gnc() {
+    git num convert "$@"
 }
-function gac() { 
-    git num add "$@" && git commit 
+function gac() {
+    git num add "$@" && git commit
 }
-function gdel() { 
-    git num convert "$@" | xargs rm 
+function gdel() {
+    git num convert "$@" | xargs rm
 }
-function gstash() { 
-    git num stash push "$@" 
+function gstash() {
+    git num stash push "$@"
 }
 
 function pr() {
@@ -25,8 +25,8 @@ function pr() {
 }
 alias gb="git branch -v --sort=committerdate"
 alias ff="cd ~/figma/figma"
-function fs() { 
-    ~/figma/figma/fullscreen/fs "$@"; 
+function fs() {
+    ~/figma/figma/fullscreen/fs "$@";
 }
 alias cddev="cd ~/dev"
 
@@ -39,8 +39,13 @@ function run_pipeline() {
     local pipeline_name=$1
     local params=$2
     local execution_name=$3
+    local parent_dir="make_edits"
+    if [[ "$pipeline_name" == */* ]]; then
+        parent_dir="${pipeline_name%%/*}"
+        pipeline_name="${pipeline_name#*/}"
+    fi
 
-    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/make_edits/${pipeline_name}:pipeline -- dev create-pipeline --start-execution --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/make_edits/${pipeline_name}/params/${params}.yaml --execution-name ${execution_name}
+    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}:pipeline -- dev create-pipeline --start-execution --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}/params/${params}.yaml --execution-name ${execution_name}
 }
 
 function run_pipeline_prod() {
@@ -52,8 +57,13 @@ function run_pipeline_prod() {
     local pipeline_name=$1
     local params=$2
     local execution_name=$3
+    local parent_dir="make_edits"
+    if [[ "$pipeline_name" == */* ]]; then
+        parent_dir="${pipeline_name%%/*}"
+        pipeline_name="${pipeline_name#*/}"
+    fi
 
-    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/make_edits/${pipeline_name}:pipeline -- prod create-pipeline --start-execution --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/make_edits/${pipeline_name}/params/${params}.yaml --execution-name ${execution_name}
+    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}:pipeline -- prod create-pipeline --start-execution --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}/params/${params}.yaml --execution-name ${execution_name}
 }
 
 function run_pipeline_local() {
@@ -64,8 +74,13 @@ function run_pipeline_local() {
 
     local pipeline_name=$1
     local params=$2
+    local parent_dir="make_edits"
+    if [[ "$pipeline_name" == */* ]]; then
+        parent_dir="${pipeline_name%%/*}"
+        pipeline_name="${pipeline_name#*/}"
+    fi
 
-    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/make_edits/${pipeline_name}:pipeline.local -- --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/make_edits/${pipeline_name}/params/${params}.yaml
+    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}:pipeline.local -- --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}/params/${params}.yaml
 }
 
 alias run_sm='run_pipeline'
