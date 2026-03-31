@@ -45,7 +45,7 @@ function run_pipeline() {
         pipeline_name="${pipeline_name#*/}"
     fi
 
-    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}:pipeline -- dev create-pipeline --start-execution --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}/params/${params}.yaml --execution-name ${execution_name}
+    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}:pipeline -- dev create-pipeline --start-execution --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}/params/${params}.yaml --execution-name ${execution_name} "${@:4}"
 }
 
 function run_pipeline_prod() {
@@ -63,7 +63,7 @@ function run_pipeline_prod() {
         pipeline_name="${pipeline_name#*/}"
     fi
 
-    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}:pipeline -- prod create-pipeline --start-execution --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}/params/${params}.yaml --execution-name ${execution_name}
+    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}:pipeline -- prod create-pipeline --start-execution --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}/params/${params}.yaml --execution-name ${execution_name} "${@:4}"
 }
 
 function run_pipeline_local() {
@@ -80,7 +80,7 @@ function run_pipeline_local() {
         pipeline_name="${pipeline_name#*/}"
     fi
 
-    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}:pipeline.local -- --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}/params/${params}.yaml
+    cd ~/figma/figma && bazel run //ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}:pipeline.local -- --params /home/ubuntu/figma/figma/ml/py/figma/workbench/pipelines/${parent_dir}/${pipeline_name}/params/${params}.yaml "${@:3}"
 }
 
 alias run_sm='run_pipeline'
